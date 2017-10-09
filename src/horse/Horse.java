@@ -1,12 +1,13 @@
-package exercises;
+package horse;
 
 import java.util.Random;
+import java.util.concurrent.Callable;
 /*
  * This class simulates the horse which each 0.5 second it steps [1,10]
  * The horse is considered finish if the length is equal 100
  * If the length bigger than 100, it is reduced by 100
  */
-public class Horse implements Runnable{
+public class Horse implements Callable<Integer>{
 	private int step;
 	private int count;
 	private int id;
@@ -18,9 +19,12 @@ public class Horse implements Runnable{
 		this.count = 0;
 		rand = new Random();
 	}
-
+	public Horse(int id) {
+		this.init(id);
+	}
+	
 	@Override
-	public void run() {
+	public Integer call() throws Exception {
 		// TODO Auto-generated method stub
 		while(step!=100) {
 			count++;
@@ -40,6 +44,8 @@ public class Horse implements Runnable{
 		else {
 			System.out.println("Something's wrong!");
 		}
+		
+		return new Integer(this.step);
 	}
 	
 	

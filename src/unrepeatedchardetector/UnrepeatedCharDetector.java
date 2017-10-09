@@ -1,4 +1,4 @@
-package exercises;
+package unrepeatedchardetector;
 
 import java.util.HashMap;
 /*

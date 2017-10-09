@@ -1,4 +1,4 @@
-package exercises;
+package dictionary;
 
 import java.util.HashMap;
 
@@ -25,10 +25,15 @@ public class Dictionary<K1, K2, V > {
 		this.bank = new HashMap<Key<K1,K2>,V>();
 	}
 	
-	//Put a key-value pair to the dictionary
-	public void put(K1 key1, K2 key2 , V value) {
+	//Put a key-value pair to the dictionary, if the key is already in the dictionary, the old value is replaced and returned
+	//otherwise, this method return null
+	public V put(K1 key1, K2 key2 , V value) {
+		V oldVal;
 		Key<K1, K2> key = new Key<K1, K2>(key1, key2);
+		if(this.bank.containsKey(key)) oldVal = this.bank.get(key);
+		else oldVal = null;
 		this.bank.put(key, value);
+		return oldVal;
 	}
 	
 	//Get the value of (key1, key2) key

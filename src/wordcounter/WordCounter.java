@@ -1,4 +1,4 @@
-package exercises;
+package wordcounter;
 
 import java.util.HashMap;
 import java.util.Map;
