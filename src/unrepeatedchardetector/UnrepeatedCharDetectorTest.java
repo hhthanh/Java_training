@@ -15,7 +15,7 @@ public class UnrepeatedCharDetectorTest {
 
 	@Test
 	public void testInit() {
-		assertNotNull(this.detector.init());
+		assertTrue(this.detector.init());
 	}
 
 	@Test
