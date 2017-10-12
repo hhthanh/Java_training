@@ -5,18 +5,21 @@ import java.util.HashMap;
  * This class simulate the program that detects the first string which has the unique characters
  */
 public class UnrepeatedCharDetector {
-	private String string;
-	
+
 	//A hashmap store the character and its frequency
 	private HashMap<Character, Integer> map;
 	
-	public void init(String s) {
-		this.string = s;
+	public boolean init() {
 		this.map = new HashMap<Character, Integer>();
+		return !(this.map==null);
 	}
 	
-	//first put all the character in the map with initial frequency 1, than increase the frequency whenever the character repeat 
-	public String detect() {
+	//first put all the character in the map with initial frequency 1, 
+	//than increase the frequency whenever the character repeat 
+	public String detect(String string) {
+		//The map need to be initial again in order to flush all the previous data;
+		//now we can detect multiple string with one instance!
+		this.init();
 		for(char c : string.toCharArray()) {
 			
 			//if character c is already in the map than increase it's frequency by 1
@@ -32,18 +35,18 @@ public class UnrepeatedCharDetector {
 		//first is the index of first-unique character
 		//last is the index of last-continuous-unique character starting from the 'first' unique character
 		int i = 0, first = 0, last = 0;
-		while(i<this.string.length() && map.get(this.string.charAt(i))>1) {
+		while(i<string.length() && map.get(string.charAt(i))>1) {
 			i++;
 		}
-		if(i==this.string.length()) {
-			return null;
+		if(i==string.length()) {
+			return "";
 		} else {
 			first = i;
 			last = i+1;
-			while(last<this.string.length()&&map.get(this.string.charAt(last))==1) {
+			while(last<string.length()&&map.get(string.charAt(last))==1) {
 				last += 1;
 			}
-			return this.string.substring(first,last);
+			return string.substring(first,last);
 		}
 	}
 }

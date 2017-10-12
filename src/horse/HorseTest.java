@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 import org.junit.Test;
 
 public class HorseTest {
-
+	//This test case check if step count equals to 100 when the horse finish
 	@Test
 	public void test() {
 		ExecutorService exe = Executors.newFixedThreadPool(10);
