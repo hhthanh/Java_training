@@ -7,11 +7,18 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Philosophy implements Runnable {
 	
 	private int id;
+	//Left fork and right fork are ReentrantLocks
 	private ReentrantLock left_fork;
 	private ReentrantLock right_fork;
+	
+	//Random element
 	private Random rand;
+	
+	//Random time for thinking and eating
 	private int randomTimeThinking;
 	private int randomTimeEating;
+	
+	
 	public Philosophy(int id, ReentrantLock left_fork, ReentrantLock right_fork, int randomTimeThinking, int randomTimeEating) {
 		
 		this.id = id;
@@ -22,6 +29,7 @@ public class Philosophy implements Runnable {
 		this.randomTimeEating = randomTimeEating;
 	}
 	
+	//method for thinking, the philosophy will thinks for a random time between 2 and randomTimeThinking seconds 
 	public void thinking() {
 		System.out.println(System.currentTimeMillis() + ": Philosophy + " + this.id + ": Thinking");
 		try {
@@ -33,6 +41,7 @@ public class Philosophy implements Runnable {
 		}
 	}
 	
+	//method for pick the left fork, this action take 2 seconds
 	public void pickLeftFork() {
 		if(this.left_fork.tryLock()) {
 			System.out.println(System.currentTimeMillis() + ": Philosophy + " + this.id + ": Picked left fork");
@@ -45,6 +54,7 @@ public class Philosophy implements Runnable {
 		}
 	}
 	
+	//method for pick the right fork, this action take 2 seconds
 	public boolean pickRightFork() {
 		try {
 			if(this.right_fork.tryLock(rand.nextInt(this.randomTimeThinking)+2000, TimeUnit.MILLISECONDS)) {
@@ -61,6 +71,7 @@ public class Philosophy implements Runnable {
 		return false;
 	}
 	
+	//method for put down the left fork, it takes 2 seconds too
 	public void returnLeftFork() {
 		
 		try {
@@ -73,6 +84,7 @@ public class Philosophy implements Runnable {
 		}
 	}
 	
+	//method for put down the right fork, it takes 2 seconds too
 	public void returnRightFork() {
 		
 		try {this.right_fork.unlock();
@@ -84,6 +96,7 @@ public class Philosophy implements Runnable {
 		}
 	}
 	
+	//method for eating, it takes random time between 2 to randomTimeThinking seconds
 	public void eat() {
 		
 		try {
@@ -95,14 +108,18 @@ public class Philosophy implements Runnable {
 		}
 	}
 	
+	//A cycle of action: thinking - hurry - eating (pick left fork, pick right fork, eat)
 	public void doStuff() {
 		thinking();
+		//make sure that no one is using the left fork
 		synchronized(this.left_fork){
 			pickLeftFork();
+			//if able to pick the right fork
 			if(pickRightFork()) {
 				eat();
 				returnRightFork();
 			}
+			//if someone is using the right fork for too long, drop the left fork and continue to think
 			else {
 				System.out.println(System.currentTimeMillis() + ": Philosophy + " + this.id + ": Cant wait, drop fork!");
 				returnLeftFork();
@@ -114,6 +131,7 @@ public class Philosophy implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		//This is the infinite loop
 		while(true) {
 			doStuff();
 		}

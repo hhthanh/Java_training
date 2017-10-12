@@ -23,12 +23,17 @@ public class Horse implements Callable<Integer>{
 		this.init(id);
 	}
 	
+	//Method simulate the action of the horse
 	@Override
 	public Integer call() throws Exception {
 		// TODO Auto-generated method stub
 		while(step!=100) {
 			count++;
+			
+			//increase the step by a random number between 1 and 10
 			step += rand.nextInt(10)+1;
+			
+			//if step is greater than 100 than reduce it by 100
 			step = step>100 ? (step - 100) : step;
 			try {
 				Thread.sleep(500);
@@ -38,6 +43,7 @@ public class Horse implements Callable<Integer>{
 			}
 		}
 		
+		//if the step equals 100 then the horse is finish
 		if(step==100) {
 			System.out.println("The "+(id+1)+"th horse finished in "+this.count+" steps!");
 		}
